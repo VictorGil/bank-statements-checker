@@ -1,6 +1,9 @@
 package com.victorgil.statementsChecker;
 
+import java.io.File;
 import java.io.IOException;
+import java.net.URISyntaxException;
+import java.nio.file.Paths;
 import java.util.List;
 
 import org.apache.commons.logging.Log;
@@ -10,13 +13,11 @@ import com.victorgil.statementsChecker.csv.CsvReader;
 import com.victorgil.statementsChecker.entities.Statement;
 
 public class App {
-    protected static Log log = LogFactory.getLog(App.class);
-    public static void main(String[] args) throws IOException{
-        String filePath="/home/user1/java/github/2016.01.31_bank-statements-checker.git/"
-                + "statements-checker/src/test/resources/"
-                + "extracto_cuenta_01.txt";
-        List<Statement> statements = new CsvReader().readFile(filePath);
-        log.info("Statements: " + statements);
-
+    private static Log log = LogFactory.getLog(App.class);
+    public static void main(String[] args) throws IOException, URISyntaxException{
+        File file = Paths.get(ClassLoader.getSystemResource("statements.txt").toURI()).toFile();
+        List<Statement> statements = new CsvReader().readFile(file);
+        //log.info("Statements: " + statements);
+        new Analyzer().analyze(statements);
     }
 }

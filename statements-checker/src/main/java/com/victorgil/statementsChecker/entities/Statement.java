@@ -9,7 +9,7 @@ import java.util.Map;
 import static com.victorgil.statementsChecker.csv.CsvReader.HEADER;
 public class Statement{
     private static int instanceCount;
-    private static final DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("dd/MM/uuuu");
+    public static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern("dd/MM/uuuu");
     
     private LocalDate transactionDate;
     private String concept;
@@ -17,18 +17,19 @@ public class Statement{
     private BigDecimal amount;
     private String counterparty;
     private String reference;
+    //logic not implemented yet
     private boolean reimbursed;
+    //distinction between id and lineNumber not implemented yet
     private int id;
     private int lineNumber;
 
     public Statement(Map<String, String> line, int lineNumber){
-    	transactionDate=LocalDate.parse(line.get(HEADER[0]), dateFormatter);
+    	transactionDate=LocalDate.parse(line.get(HEADER[0]), DATE_FORMATTER);
         concept = line.get(HEADER[1]);
-        valueDate=LocalDate.parse(line.get(HEADER[2]), dateFormatter);
+        valueDate=LocalDate.parse(line.get(HEADER[2]), DATE_FORMATTER);
         amount=new BigDecimal(line.get(HEADER[3]));
-        //We do not parse HEADER[4], it is not meaningful for our purpose
-        counterparty=line.get(HEADER[5]);
-        reference=line.get(HEADER[6]);
+        counterparty=line.get(HEADER[4]);
+        reference=line.get(HEADER[5]);
         id=++instanceCount;
         this.lineNumber = lineNumber;
     }
@@ -119,7 +120,9 @@ public class Statement{
 
     public void setLineNumber(int lineNumber){
         this.lineNumber = lineNumber;
-    }
+    }        //String filePath="/home/user1/java/github/2016.01.31_bank-statements-checker.git/"
+    //        + "statements-checker/src/test/resources/"
+    //        + "statements.txt";
 
     public static int getInstanceCount(){
         return instanceCount;

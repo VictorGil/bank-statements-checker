@@ -22,16 +22,16 @@ public class CsvReader {
 	private CsvMapReader csvReader;
     private InputStreamReader reader;
     public static String[] HEADER = {"FECHA_OPERACIÓN", "CONCEPTO", "FECHA_VALOR", "IMPORTE",
-			"SALDO", "ACREEDOR", "REFERENCIA"};
+			"ACREEDOR", "REFERENCIA"};
     
-	public List<Statement> readFile(String filePath) throws FileNotFoundException,
+	public List<Statement> readFile(File file) throws FileNotFoundException,
 	IOException{
-	    initCsvReader(filePath);
+	    initCsvReader(file);
 	    readOriginalHeader();
 	    return readLines();
 	}
-	private void initCsvReader(String filePath) throws FileNotFoundException{
-		reader = new InputStreamReader(new FileInputStream(new File(filePath)));
+	private void initCsvReader(File file) throws FileNotFoundException{
+		reader = new InputStreamReader(new FileInputStream(file));
 		//We assume that the file uses the same line separator chars as the current system.
 		csvReader = new CsvMapReader(reader, new CsvPreference.Builder('"', '|', System.lineSeparator()).build());
 	}
