@@ -42,12 +42,20 @@ public class CsvReader {
 	private List<Statement> readLines() throws IOException{
 	    List<Statement> statements = new ArrayList<Statement>();
 	    int lineCount=0;
-	    while (true){
-	        Map<String,String> row = csvReader.read(HEADER);
-	        if (row == null)
-	            break;
-	        lineCount++;
-	        statements.add(new Statement(row, lineCount));
+	    try{
+	        while (true){
+	            Map<String,String> row = csvReader.read(HEADER);
+	            if (row == null)
+	                break;
+	            lineCount++;
+	            statements.add(new Statement(row, lineCount));
+	        }//catching exception just to close the reader in the finally block
+	    } catch(IOException ex){
+	        throw ex;
+	    } finally{
+	        log.trace("Closing readers");
+	        csvReader.close();
+	        reader.close();
 	    }
 	    log.debug("Number of lines read: " + lineCount);
 	    return statements;
